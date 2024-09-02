@@ -6,7 +6,7 @@ const SearchDropdown = ({ onFileSelect }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [items, setItems] = useState([]);
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
-  const [selectedFile, setSelectedFile] = useState('');
+  // const [selectedFile, setSelectedFile] = useState('');
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const SearchDropdown = ({ onFileSelect }) => {
   }, []);
 
   const handleItemClick = (filename) => {
-    setSelectedFile(filename);
+    // setSelectedFile(filename);
     onFileSelect(filename);
     setSuggestions([]);
     setSearchButtonClicked(false);

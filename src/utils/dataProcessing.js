@@ -36,12 +36,12 @@ const convertDate = (data) => {
     return data.map(item => ({
         ...item,
         visualDate: new Date(item.createdAt).toLocaleString(),
-        sellingPrice: parseFloat(item.sellingPrice?.replace('₹', '')) || 0,
-        discountedPrice: parseFloat(item.discountedPrice?.replace('₹', '')) || 0
+        sellingPrice: parseFloat(item.sellingPrice?.replace('₹', '')) ,
+        discountedPrice: parseFloat(item.discountedPrice?.replace('₹', '')) 
     }));
 };
 
-const replaceNaNWithAverage = (data) => {
+export const replaceNaNWithAverage = (data) => {
     const validSellingPrices = data.filter(item => !isNaN(item.sellingPrice));
     const averageSellingPrice = validSellingPrices.length > 0
         ? validSellingPrices.reduce((sum, item) => sum + item.sellingPrice, 0) / validSellingPrices.length
@@ -54,8 +54,8 @@ const replaceNaNWithAverage = (data) => {
 
     return data.map(item => ({
         ...item,
-        sellingPrice: isNaN(item.sellingPrice) ? averageSellingPrice : item.sellingPrice,
-        discountedPrice: isNaN(item.discountedPrice) ? averageDiscountedPrice : item.discountedPrice
+        sellingPrice: isNaN(item.sellingPrice) ? Math.floor(averageSellingPrice) : item.sellingPrice,
+        discountedPrice: isNaN(item.discountedPrice) ? Math.floor(averageDiscountedPrice) : item.discountedPrice
     }));
 };
 

@@ -29,6 +29,22 @@ export const TimeFrameSelector = ({ timeFrame, setTimeFrame }) => {
 };
 
 export const PriceAnalysisCard = ({ item, itemData }) => {
+
+    const validSellingPrices = itemData.filter(i => !isNaN(parseFloat(i.sellingPrice.slice(1))));
+    const averageSellingPrice = validSellingPrices.length > 0
+        ? validSellingPrices.reduce((sum, i) => sum + parseFloat(i.sellingPrice.slice(1)), 0) / validSellingPrices.length
+        : 0;
+
+    const validDiscountedPrices = itemData.filter(i => !isNaN(parseFloat(i.discountedPrice.slice(1))));
+    const averageDiscountedPrice = validDiscountedPrices.length > 0
+        ? validDiscountedPrices.reduce((sum, i) => sum + parseFloat(i.discountedPrice.slice(1)), 0) / validDiscountedPrices.length
+        : 0;
+
+    itemData = itemData.map(i => ({
+        ...i,
+        sellingPrice: i.sellingPrice.trim() === '' ? `₹${averageSellingPrice.toFixed(2)}` : i.sellingPrice,
+        discountedPrice: i.discountedPrice.trim() === '' ? `₹${averageDiscountedPrice.toFixed(2)}` : i.discountedPrice
+    }));
     const maxPrice = Math.max(...itemData.map(i => parseFloat(i.sellingPrice.slice(1))));
     const minPrice = Math.min(...itemData.map(i => parseFloat(i.sellingPrice.slice(1))));
     const avgPrice = (itemData.reduce((sum, i) => sum + parseFloat(i.sellingPrice.slice(1)), 0) / itemData.length).toFixed(2);
