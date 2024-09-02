@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import SearchDropdown from '../Components/Search';
-import { fetchItemData, processItemData, calculateClusterData } from '../utils/dataProcessing';
+import { fetchItemData, processItemData, calculateClusterData, weatherDescription } from '../utils/dataProcessing';
 import { TimeFrameSelector, PriceAnalysisCard } from '../Components/AnalysisComponents';
 
 const Analysis2 = () => {
@@ -30,7 +30,8 @@ const Analysis2 = () => {
 
     const processedData = useMemo(() => processItemData(itemData), [itemData]);
     const clusterData = useMemo(() => calculateClusterData(processedData, timeFrame), [processedData, timeFrame]);
-
+    const weatherDescriptions = useMemo(() => weatherDescription(processedData), [processedData]);
+    console.log(weatherDescriptions);
     const chartData = timeFrame === 'all' ? processedData : clusterData;
 
     return (
@@ -59,7 +60,10 @@ const Analysis2 = () => {
                             <Tooltip />
                             <Legend />
                             {timeFrame === 'all' ? (
+                                <>
                                 <Line type="monotone" dataKey="sellingPrice" stroke="black" dot={false} />
+                                
+                                </>
                             ) : (
                                 <>
                                     <Line type="monotone" dataKey="maxSellPrice" stroke="#8884d8" dot={false} />

@@ -44,19 +44,19 @@ export const PriceAnalysisCard = ({ item, itemData }) => {
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-                <PriceCard title="Max Price" value={maxPrice} color="blue" />
-                <PriceCard title="Min Price" value={minPrice} color="green" />
-                <PriceCard title="Avg Price" value={avgPrice} color="yellow" />
-                <PriceCard title="Max Variance" value={`${maxVariance}%`} color="purple" />
+                <PriceCard title="Max Price" value={maxPrice} bgcolor="bg-blue-100" textcolor="text-blue-800" />
+                <PriceCard title="Min Price" value={minPrice} bgcolor="bg-green-100" textcolor="text-green-800" />
+                <PriceCard title="Avg Price" value={avgPrice} bgcolor="bg-yellow-100" textcolor="text-yellow-800" />
+                <PriceCard title="Max Variance" value={`${maxVariance}%`} bgcolor="bg-purple-100" textcolor="text-purple-800" />
             </div>
         </div>
     );
 };
 
-const PriceCard = ({ title, value, color }) => (
-    <div className={`bg-${color}-100 p-4 rounded-md`}>
-        <h4 className={`text-lg font-medium text-${color}-800`}>{title}</h4>
-        <p className={`text-2xl font-bold text-${color}-600`}>
+const PriceCard = ({ title, value, bgcolor, textcolor }) => (
+    <div className={`${bgcolor} p-4 rounded-md`}>
+        <h4 className={`text-lg font-medium ${textcolor}`}>{title}</h4>
+        <p className={`text-2xl font-bold ${textcolor}`}>
             {typeof value === 'number' ? `₹${value}` : value}
         </p>
     </div>

@@ -25,25 +25,37 @@ export const calculateClusterData = (data, timeFrame) => {
     return ClusterLogic(data, hours);
 };
 
+export const weatherDescription = (data) => {
+    const weatherDescriptions = data.map(item => item.weatherDescription);
+    const uniqueWeatherDescriptions = [...new Set(weatherDescriptions)];
+    return uniqueWeatherDescriptions;
+}
 // Helper functions
 
 const convertDate = (data) => {
     return data.map(item => ({
         ...item,
         visualDate: new Date(item.createdAt).toLocaleString(),
-        sellingPrice: parseFloat(item.sellingPrice?.replace('₹', '')) || 0
+        sellingPrice: parseFloat(item.sellingPrice?.replace('₹', '')) || 0,
+        discountedPrice: parseFloat(item.discountedPrice?.replace('₹', '')) || 0
     }));
 };
 
 const replaceNaNWithAverage = (data) => {
-    const validPrices = data.filter(item => !isNaN(item.sellingPrice));
-    const averagePrice = validPrices.length > 0
-        ? validPrices.reduce((sum, item) => sum + item.sellingPrice, 0) / validPrices.length
+    const validSellingPrices = data.filter(item => !isNaN(item.sellingPrice));
+    const averageSellingPrice = validSellingPrices.length > 0
+        ? validSellingPrices.reduce((sum, item) => sum + item.sellingPrice, 0) / validSellingPrices.length
+        : 0;
+
+    const validDiscountedPrices = data.filter(item => !isNaN(item.discountedPrice));
+    const averageDiscountedPrice = validDiscountedPrices.length > 0
+        ? validDiscountedPrices.reduce((sum, item) => sum + item.discountedPrice, 0) / validDiscountedPrices.length
         : 0;
 
     return data.map(item => ({
         ...item,
-        sellingPrice: isNaN(item.sellingPrice) ? averagePrice : item.sellingPrice
+        sellingPrice: isNaN(item.sellingPrice) ? averageSellingPrice : item.sellingPrice,
+        discountedPrice: isNaN(item.discountedPrice) ? averageDiscountedPrice : item.discountedPrice
     }));
 };
 
@@ -102,3 +114,5 @@ const getHoursFromTimeFrame = (timeFrame) => {
             return 24;
     }
 };
+
+
