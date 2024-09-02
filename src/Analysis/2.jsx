@@ -61,8 +61,7 @@ const Analysis2 = () => {
                             <Legend />
                             {timeFrame === 'all' ? (
                                 <>
-                                <Line type="monotone" dataKey="sellingPrice" stroke="black" dot={false} />
-                                
+                                    <Line type="monotone" dataKey="sellingPrice" stroke="black" dot={false} />
                                 </>
                             ) : (
                                 <>

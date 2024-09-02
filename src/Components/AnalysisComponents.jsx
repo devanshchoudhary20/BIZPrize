@@ -29,7 +29,6 @@ export const TimeFrameSelector = ({ timeFrame, setTimeFrame }) => {
 };
 
 export const PriceAnalysisCard = ({ item, itemData }) => {
-
     const validSellingPrices = itemData.filter(i => !isNaN(parseFloat(i.sellingPrice.slice(1))));
     const averageSellingPrice = validSellingPrices.length > 0
         ? validSellingPrices.reduce((sum, i) => sum + parseFloat(i.sellingPrice.slice(1)), 0) / validSellingPrices.length

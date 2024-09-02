@@ -6,7 +6,6 @@ const SearchDropdown = ({ onFileSelect }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [items, setItems] = useState([]);
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
-  // const [selectedFile, setSelectedFile] = useState('');
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ const SearchDropdown = ({ onFileSelect }) => {
       const filteredItems = items.filter(item =>
         item.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
-      setSuggestions(filteredItems); // Show all suggestions
+      setSuggestions(filteredItems);
     } else {
       setSuggestions([]);
     }
@@ -43,7 +42,6 @@ const SearchDropdown = ({ onFileSelect }) => {
   }, []);
 
   const handleItemClick = (filename) => {
-    // setSelectedFile(filename);
     onFileSelect(filename);
     setSuggestions([]);
     setSearchButtonClicked(false);
@@ -55,7 +53,7 @@ const SearchDropdown = ({ onFileSelect }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mb-4" ref={containerRef}>
+    <div className="w-full max-w-md mx-auto mb-4 relative" ref={containerRef}>
       <div className="relative">
         <input
           type="text"
@@ -70,7 +68,7 @@ const SearchDropdown = ({ onFileSelect }) => {
         </button>
       </div>
       {(suggestions.length > 0 || searchButtonClicked === true) && (
-        <div className="mt-2 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto absolute z-10 mx-auto">
+        <div className="mt-2 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto absolute z-10 mx-auto w-inherit">
           {suggestions.map((item, index) => (
             <div key={index} className="flex items-center p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleItemClick(item.filename)}>
               <img src={item.imageUrl} alt={item.title} className="w-12 h-12 object-cover mr-4" />

@@ -30,14 +30,15 @@ export const weatherDescription = (data) => {
     const uniqueWeatherDescriptions = [...new Set(weatherDescriptions)];
     return uniqueWeatherDescriptions;
 }
+
 // Helper functions
 
 const convertDate = (data) => {
     return data.map(item => ({
         ...item,
         visualDate: new Date(item.createdAt).toLocaleString(),
-        sellingPrice: parseFloat(item.sellingPrice?.replace('₹', '')) ,
-        discountedPrice: parseFloat(item.discountedPrice?.replace('₹', '')) 
+        sellingPrice: parseFloat(item.sellingPrice?.replace('₹', '')),
+        discountedPrice: parseFloat(item.discountedPrice?.replace('₹', ''))
     }));
 };
 
