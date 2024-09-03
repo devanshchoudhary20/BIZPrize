@@ -10,7 +10,7 @@ const SearchDropdown = ({ onFileSelect }) => {
 
   useEffect(() => {
     const fetchItems = async () => {
-      const response = await fetch('http://127.0.0.1:8080/index.json');
+      const response = await fetch('https://storage.googleapis.com/clone-206ad.appspot.com/items/index.json');
       const data = await response.json();
       setItems(data);
     };
@@ -53,7 +53,7 @@ const SearchDropdown = ({ onFileSelect }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mb-4 relative" ref={containerRef}>
+    <div className="w-full max-w-md mx-auto mb-4 " ref={containerRef}>
       <div className="relative">
         <input
           type="text"
@@ -68,7 +68,7 @@ const SearchDropdown = ({ onFileSelect }) => {
         </button>
       </div>
       {(suggestions.length > 0 || searchButtonClicked === true) && (
-        <div className="mt-2 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto absolute z-10 mx-auto w-inherit">
+        <div className="mt-2 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto z-10 mx-auto w-inherit">
           {suggestions.map((item, index) => (
             <div key={index} className="flex items-center p-2 hover:bg-gray-100 cursor-pointer" onClick={() => handleItemClick(item.filename)}>
               <img src={item.imageUrl} alt={item.title} className="w-12 h-12 object-cover mr-4" />
