@@ -47,7 +47,7 @@ const Analysis2 = () => {
             {loading && <p>Loading...</p>}
             {error && <p className="text-red-500">{error}</p>}
 
-            {!loading && !error && chartData.length > 0 && (
+            {!loading && !error && chartData.length > 0 ? (
                 <div className="h-96 mb-8">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData}>
@@ -72,11 +72,12 @@ const Analysis2 = () => {
                         </LineChart>
                     </ResponsiveContainer>
                 </div>
+            ) : (
+                <div className="h-96 mb-8 bg-gray-200 animate-pulse rounded-lg"></div>
             )}
 
             {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
         </div>
     );
 }
-
 export default Analysis2;
