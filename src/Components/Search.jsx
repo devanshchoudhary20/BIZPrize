@@ -85,28 +85,28 @@ const SearchDropdown = ({ onFileSelect }) => {
             const filteredItems = items.filter(item => activeCategory === 'All' || item.itemCategory === activeCategory);
             setSuggestions(filteredItems);
           }}
-          className="w-full p-4 pr-12 text-lg focus:outline-none transition-all duration-300 focus:bg-gray-100"
+          className="w-full p-3 sm:p-4 pr-12 text-base sm:text-lg focus:outline-none transition-all duration-300 focus:bg-gray-100"
         />
         <button 
-          className="absolute right-4 top-4 bg-red-500 text-white p-2 rounded-full transition-all duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+          className="absolute right-2 sm:right-4 top-2 sm:top-4 bg-red-500 text-white p-2 rounded-full transition-all duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
           onClick={handleSearchButtonClick}
         >
-          <Search size={24} />
+          <Search size={20} />
         </button>
       </div>
       
       {showCategories && (
-        <div className="flex border-b">
+        <div className="flex flex-wrap border-b">
           {categories.map((category) => (
             <button
               key={category.name}
               onClick={() => handleCategoryChange(category.name)}
-              className={`flex-1 py-3 px-4 text-center transition-all duration-300 ${activeCategory === category.name ? 'border-b-2 border-red-500 bg-red-100' : 'hover:bg-gray-100'}`}
+              className={`flex-1 py-2 sm:py-3 px-2 sm:px-4 text-center transition-all duration-300 ${activeCategory === category.name ? 'border-b-2 border-red-500 bg-red-100' : 'hover:bg-gray-100'}`}
             >
-              <span className="text-2xl mr-2">
+              <span className="text-xl sm:text-2xl mr-1 sm:mr-2">
                 {category.icon}
-                </span>
-              <span>{category.name}</span>
+              </span>
+              <span className="text-xs sm:text-sm">{category.name}</span>
             </button>
           ))}
         </div>
@@ -117,13 +117,13 @@ const SearchDropdown = ({ onFileSelect }) => {
           {suggestions.map((item, index) => (
             <div 
               key={index} 
-              className="flex items-center p-4 hover:bg-gray-100 cursor-pointer border-b border-gray-200 transition-all duration-300" 
+              className="flex items-center p-3 sm:p-4 hover:bg-gray-100 cursor-pointer border-b border-gray-200 transition-all duration-300" 
               onClick={() => handleItemClick(item.filename)}
             >
-              <img src={item.imageUrl} alt={item.title} className="w-16 h-16 object-cover mr-4 rounded" />
+              <img src={item.imageUrl} alt={item.title} className="w-12 h-12 sm:w-16 sm:h-16 object-cover mr-3 sm:mr-4 rounded" />
               <div>
-                <h3 className="font-semibold">{item.title}</h3>
-                <p className="text-sm text-gray-600">{item.quantity}</p>
+                <h3 className="font-semibold text-sm sm:text-base">{item.title}</h3>
+                <p className="text-xs sm:text-sm text-gray-600">{item.quantity}</p>
               </div>
             </div>
           ))}

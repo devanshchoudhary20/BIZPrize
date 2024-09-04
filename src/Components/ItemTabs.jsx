@@ -20,12 +20,12 @@ const ItemSelector = ({ onFileSelect }) => {
   }, []);
 
   return (
-    <div className="flex flex-wrap gap-2 mb-4 max-w-3xl">
+    <div className="flex flex-wrap gap-2 mb-4 max-w-full sm:max-w-3xl">
       {items.slice(0, 10).map((item, index) => (
         <motion.button
           key={index}
           onClick={() => handleClick(item.filename)}
-          className={`flex items-center space-x-2 p-2 rounded-full shadow-md transition-colors duration-300 ${
+          className={`flex items-center space-x-1 sm:space-x-2 p-1 sm:p-2 rounded-full shadow-md transition-colors duration-300 ${
             selectedFile === item.filename
               ? "bg-gradient-to-r from-purple-500 to-indigo-600 text-white"
               : "bg-white hover:bg-gray-100"
@@ -36,8 +36,8 @@ const ItemSelector = ({ onFileSelect }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3}}
         >
-          <img src={item.imageUrl} alt={item.title} className="w-8 h-8 rounded-full" />
-          <span className="text-sm font-medium">{item.title}</span>
+          <img src={item.imageUrl} alt={item.title} className="w-6 h-6 sm:w-8 sm:h-8 rounded-full" />
+          <span className="text-xs sm:text-sm font-medium">{item.title}</span>
         </motion.button>
       ))}
     </div>

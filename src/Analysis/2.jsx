@@ -37,8 +37,8 @@ const Analysis2 = () => {
     const chartData = timeFrame === 'all' ? processedData : clusterData;
 
     return (
-        <div className="container mx-auto p-4">
-            <div className="w-max mb-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-full mb-4">
                 <ItemSelector onFileSelect={setSelectedItem} />
             </div>
             <div className="mb-4">
@@ -55,18 +55,18 @@ const Analysis2 = () => {
                     <motion.img
                         src={itemData[0]?.imageUrl || '/placeholder-image.jpg'}
                         alt={itemData[0]?.title || 'Selected Item'}
-                        className="w-16 h-16 rounded-full object-cover"
+                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover"
                         whileHover={{ scale: 1.1 }}
                     />
                     <div>
                         <motion.h2
-                            className="text-2xl font-bold text-gray-800"
+                            className="text-xl sm:text-2xl font-bold text-gray-800"
                             layoutId="item-title"
                         >
                             {itemData[0]?.title || 'Selected Item'}
                         </motion.h2>
                         <motion.p
-                            className="text-md text-gray-600"
+                            className="text-sm sm:text-md text-gray-600"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.2 }}
@@ -83,7 +83,7 @@ const Analysis2 = () => {
             {error && <p className="text-red-500">{error}</p>}
 
             {!loading && !error && chartData.length > 0 ? (
-                <div className="h-96 mb-8">
+                <div className="h-64 sm:h-96 mb-8">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData}>
                             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -108,7 +108,7 @@ const Analysis2 = () => {
                     </ResponsiveContainer>
                 </div>
             ) : (
-                <div className="h-96 mb-8 bg-gray-200 animate-pulse rounded-lg"></div>
+                <div className="h-64 sm:h-96 mb-8 bg-gray-200 animate-pulse rounded-lg"></div>
             )}
 
             {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
