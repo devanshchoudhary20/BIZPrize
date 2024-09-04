@@ -19,10 +19,8 @@ const SearchDropdown = ({ onFileSelect }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   // const [analyzedPrices, setAnalyzedPrices] = useState({ topVaryingPrices: [], staplePrices: [] });
   const containerRef = useRef(null);
-  const [showCategories, setShowCategories] = useState(false);
+  const [showCategories, setShowCategories] = useState(true);
 
-    console.log(activeCategory);
-    // console.log(suggestions);
   useEffect(() => {
     const fetchItems = async () => {
       const response = await fetch('https://storage.googleapis.com/clone-206ad.appspot.com/items/index_new.json');
@@ -38,7 +36,6 @@ const SearchDropdown = ({ onFileSelect }) => {
       item.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSuggestions(filteredItems);
-    console.log(filteredItems);
   }, [searchTerm, items, activeCategory]);
 
   useEffect(() => {
@@ -71,10 +68,8 @@ const SearchDropdown = ({ onFileSelect }) => {
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
-    // setSearchTerm('');
     const filteredItems = items.filter(item => category === 'All' || item.itemCategory === category);
     setSuggestions(filteredItems);
-    // setShowCategories(false);
   };
 
   return (

@@ -3,6 +3,8 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tool
 import SearchDropdown from '../Components/Search';
 import { fetchItemData, processItemData, calculateClusterData, weatherDescription } from '../utils/dataProcessing';
 import { TimeFrameSelector, PriceAnalysisCard } from '../Components/AnalysisComponents';
+import ItemSelector from '../Components/ItemTabs';
+import { motion } from 'framer-motion';
 
 const Analysis2 = () => {
     const [timeFrame, setTimeFrame] = useState('all');
@@ -36,11 +38,44 @@ const Analysis2 = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">Analysis of {itemData[0]?.title || 'Selected Item'} for {timeFrame}</h2>
-            
+            <div className="w-max mb-4">
+                <ItemSelector onFileSelect={setSelectedItem} />
+            </div>
             <div className="mb-4">
                 <SearchDropdown onFileSelect={setSelectedItem} />
             </div>
+
+            {selectedItem && (
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex items-center space-x-4 bg-gradient-to-r from-purple-100 to-indigo-100 p-4 rounded-lg shadow-md mb-6"
+                >
+                    <motion.img
+                        src={itemData[0]?.imageUrl || '/placeholder-image.jpg'}
+                        alt={itemData[0]?.title || 'Selected Item'}
+                        className="w-16 h-16 rounded-full object-cover"
+                        whileHover={{ scale: 1.1 }}
+                    />
+                    <div>
+                        <motion.h2
+                            className="text-2xl font-bold text-gray-800"
+                            layoutId="item-title"
+                        >
+                            {itemData[0]?.title || 'Selected Item'}
+                        </motion.h2>
+                        <motion.p
+                            className="text-md text-gray-600"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            Analysis {timeFrame==='all'?' of Whole Period':` for Every ${timeFrame}`}
+                        </motion.p>
+                    </div>
+                </motion.div>
+            )}
 
             <TimeFrameSelector timeFrame={timeFrame} setTimeFrame={setTimeFrame} />
 
