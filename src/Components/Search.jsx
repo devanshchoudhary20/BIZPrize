@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
-// import { analyzeItemPrices } from '../utils/priceAnalysis';
-
+import { analyzeTomatoData } from '../utils/priceAnalysis';
 const categories = [
   { name: 'All', icon: '🍽️' },
   { name: 'Fruits', icon: '🍌' },
@@ -129,30 +128,7 @@ const SearchDropdown = ({ onFileSelect }) => {
           ))}
         </div>
       )}
-
-      {/* {searchButtonClicked && (
-        <div className="p-4">
-          <h2 className="text-xl font-bold mb-4">Top Varying Prices</h2>
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            {analyzedPrices.topVaryingPrices.map((item, index) => (
-              <div key={index} className="bg-gray-100 p-4 rounded-lg transition-all duration-300 hover:shadow-md">
-                <h3 className="font-semibold">{item.title}</h3>
-                <p>{item.quantity}</p>
-              </div>
-            ))}
-          </div>
-          
-          <h2 className="text-xl font-bold mb-4">Staple Prices</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {analyzedPrices.staplePrices.map((item, index) => (
-              <div key={index} className="bg-gray-100 p-4 rounded-lg transition-all duration-300 hover:shadow-md">
-                <h3 className="font-semibold">{item.title}</h3>
-                <p>{item.quantity}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )} */}
+      {analyzeTomatoData}
     </div>
   );
 };

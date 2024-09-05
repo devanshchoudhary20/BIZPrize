@@ -5,6 +5,8 @@ import { fetchItemData, processItemData, calculateClusterData, weatherDescriptio
 import { TimeFrameSelector, PriceAnalysisCard } from '../Components/AnalysisComponents';
 import ItemSelector from '../Components/ItemTabs';
 import { motion } from 'framer-motion';
+import { analyzeTomatoData } from '../utils/priceAnalysis';
+import PriceInsightsComponent from '../Components/PriceInsight';
 
 const Analysis2 = () => {
     const [timeFrame, setTimeFrame] = useState('all');
@@ -12,14 +14,22 @@ const Analysis2 = () => {
     const [itemData, setItemData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [volatilityData, setVolatilityData] = useState([]);
 
     useEffect(() => {
         if (selectedItem) {
             setLoading(true);
             setError(null);
             fetchItemData(selectedItem)
-                .then(data => {
+                .then(async (data) => {
                     setItemData(data);
+                    try {
+                        const analyzed = await analyzeTomatoData(selectedItem);
+                        setVolatilityData(analyzed.volatilityByRange);
+                    } catch (err) {
+                        console.error("Error analyzing data:", err);
+                        setError("Failed to analyze item data. Please try again.");
+                    }
                     setLoading(false);
                 })
                 .catch(err => {
@@ -33,9 +43,9 @@ const Analysis2 = () => {
     const processedData = useMemo(() => processItemData(itemData), [itemData]);
     const clusterData = useMemo(() => calculateClusterData(processedData, timeFrame), [processedData, timeFrame]);
     const weatherDescriptions = useMemo(() => weatherDescription(processedData), [processedData]);
-    console.log(weatherDescriptions);
-    const chartData = timeFrame === 'all' ? processedData : clusterData;
+    
 
+    const chartData = timeFrame === 'all' ? processedData : clusterData;
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="w-full mb-4">
@@ -112,6 +122,15 @@ const Analysis2 = () => {
             )}
 
             {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
+            <div className="flex justify-center">
+                <div>
+                    {
+                        selectedItem && volatilityData && volatilityData.length > 0 && (
+                            <PriceInsightsComponent data={volatilityData} />
+                        )
+                    }
+                </div>
+            </div>
         </div>
     );
 }
