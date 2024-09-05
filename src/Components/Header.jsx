@@ -17,8 +17,13 @@ const Header = () => {
 
   return (
     <header className="bg-gradient-to-r from-purple-600 to-purple-800 p-4 sm:p-6 shadow-lg mb-4">
-      <div className="container  flex justify-end">
-        <div className="flex justify-end items-center">
+      <div className="container mx-auto">
+        <div className="flex justify-between items-center">
+          <div className="text-white text-xl sm:text-2xl font-bold">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-500">
+              BIZPrize
+            </span>
+          </div>
           
           {/* Mobile menu button */}
           <button 
