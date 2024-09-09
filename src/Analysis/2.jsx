@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import SearchDropdown from '../Components/Search';
-import { fetchItemData, processItemData, calculateClusterData, weatherDescription } from '../utils/dataProcessing';
+import { fetchItemData, processItemData, calculateClusterData } from '../utils/dataProcessing';
 import { TimeFrameSelector, PriceAnalysisCard } from '../Components/AnalysisComponents';
 import ItemSelector from '../Components/ItemTabs';
 import { motion } from 'framer-motion';
-import { analyzeTomatoData } from '../utils/priceAnalysis';
+// import { analyzeTomatoData } from '../utils/priceAnalysis';
 import PriceInsightsComponent from '../Components/PriceInsight';
 
 const Analysis2 = () => {
@@ -14,7 +14,6 @@ const Analysis2 = () => {
     const [itemData, setItemData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [volatilityData, setVolatilityData] = useState([]);
 
     useEffect(() => {
         if (selectedItem) {
@@ -24,8 +23,8 @@ const Analysis2 = () => {
                 .then(async (data) => {
                     setItemData(data);
                     try {
-                        const analyzed = await analyzeTomatoData(selectedItem);
-                        setVolatilityData(analyzed.volatilityByRange);
+                        // const analyzed = await analyzeTomatoData(selectedItem);
+
                     } catch (err) {
                         console.error("Error analyzing data:", err);
                         setError("Failed to analyze item data. Please try again.");
@@ -42,7 +41,6 @@ const Analysis2 = () => {
 
     const processedData = useMemo(() => processItemData(itemData), [itemData]);
     const clusterData = useMemo(() => calculateClusterData(processedData, timeFrame), [processedData, timeFrame]);
-    const weatherDescriptions = useMemo(() => weatherDescription(processedData), [processedData]);
     
 
     const chartData = timeFrame === 'all' ? processedData : clusterData;
@@ -123,13 +121,9 @@ const Analysis2 = () => {
 
             {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
             <div className="flex justify-center">
-                <div>
-                    {
-                        selectedItem && volatilityData && volatilityData.length > 0 && (
-                            <PriceInsightsComponent data={volatilityData} />
-                        )
-                    }
-                </div>
+                {selectedItem && (
+                    <PriceInsightsComponent selectedItem={selectedItem} />
+                )}
             </div>
         </div>
     );
