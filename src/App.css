@@ -44,3 +44,7 @@
 tspan {
   font-size: x-small;
 }
+
+* {
+  /* background-color: rgba(245, 0, 0, 0.1); */
+}

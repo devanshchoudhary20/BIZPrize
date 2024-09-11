@@ -4,8 +4,6 @@ import SearchDropdown from '../Components/Search';
 import { fetchItemData, processItemData, calculateClusterData } from '../utils/dataProcessing';
 import { TimeFrameSelector, PriceAnalysisCard } from '../Components/AnalysisComponents';
 import ItemSelector from '../Components/ItemTabs';
-import { motion } from 'framer-motion';
-// import { analyzeTomatoData } from '../utils/priceAnalysis';
 import PriceInsightsComponent from '../Components/PriceInsight';
 
 const Analysis2 = () => {
@@ -45,45 +43,14 @@ const Analysis2 = () => {
 
     const chartData = timeFrame === 'all' ? processedData : clusterData;
     return (
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="w-full mb-4">
+        <div className="w-full ">
+            <div className="mb-4 flex flex-col flex-wrap gap-2 bg-gradient-to-r from-[#FF071F] to-[#0131A0] p-4  items-center">
                 <ItemSelector onFileSelect={setSelectedItem} />
-            </div>
-            <div className="mb-4">
                 <SearchDropdown onFileSelect={setSelectedItem} />
             </div>
-
-            {selectedItem && (
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="flex items-center space-x-4 bg-gradient-to-r from-purple-100 to-indigo-100 p-4 rounded-lg shadow-md mb-6"
-                >
-                    <motion.img
-                        src={itemData[0]?.imageUrl || '/placeholder-image.jpg'}
-                        alt={itemData[0]?.title || 'Selected Item'}
-                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover"
-                        whileHover={{ scale: 1.1 }}
-                    />
-                    <div>
-                        <motion.h2
-                            className="text-xl sm:text-2xl font-bold text-gray-800"
-                            layoutId="item-title"
-                        >
-                            {itemData[0]?.title || 'Selected Item'}
-                        </motion.h2>
-                        <motion.p
-                            className="text-sm sm:text-md text-gray-600"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                        >
-                            Analysis {timeFrame==='all'?' of Whole Period':` for Every ${timeFrame}`}
-                        </motion.p>
-                    </div>
-                </motion.div>
-            )}
+            <div>
+            {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
+            </div>
 
             <TimeFrameSelector timeFrame={timeFrame} setTimeFrame={setTimeFrame} />
 
@@ -91,7 +58,7 @@ const Analysis2 = () => {
             {error && <p className="text-red-500">{error}</p>}
 
             {!loading && !error && chartData.length > 0 ? (
-                <div className="h-64 sm:h-96 mb-8">
+                <div className="h-64 sm:h-96 mb-8 w-3/4 mx-40 shadow-lg p-2">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData}>
                             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -119,8 +86,8 @@ const Analysis2 = () => {
                 <div className="h-64 sm:h-96 mb-8 bg-gray-200 animate-pulse rounded-lg"></div>
             )}
 
-            {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
-            <div className="flex justify-center">
+            {/* {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />} */}
+            <div className="flex">
                 {selectedItem && (
                     <PriceInsightsComponent selectedItem={selectedItem} />
                 )}

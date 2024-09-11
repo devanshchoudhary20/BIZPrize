@@ -10,7 +10,7 @@ export const TimeFrameSelector = ({ timeFrame, setTimeFrame }) => {
     ];
 
     return (
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 mb-4 mx-40 w-3/4">
             {buttons.map(({ label, value }) => (
                 <button
                     key={value}
@@ -50,29 +50,32 @@ export const PriceAnalysisCard = ({ item, itemData }) => {
     const maxVariance = ((maxPrice / minPrice - 1) * 100).toFixed(2);
 
     return (
-        <div className="bg-white shadow-lg rounded-lg p-6">
-            <div className="flex items-center mb-4">
-                <img src={item.imageUrl} alt={item.title} className="w-24 h-24 object-cover rounded-md mr-4" />
-                <div>
-                    <h2 className="text-2xl font-bold text-gray-800">Price Analysis</h2>
-                    <h3 className="text-xl font-semibold text-green-600">{item.title}</h3>
+        <div className="bg-white shadow-lg rounded-lg p-4 w-3/4 mx-40 mb-4 ">
+            <div className="flex items-center justify-between">
+                <div className='flex '>
+                    <img src={item.imageUrl} alt={item.title} className="w-16 h-16 object-cover rounded-full mr-4" />
+                    <div >
+                        
+                        <h2 className="text-xl font-bold text-gray-800">{item.title}</h2>
+                        <p className="text-sm text-gray-600">Analysis of last 2 months</p>
+                    </div>
                 </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <PriceCard title="Max Price" value={maxPrice} bgcolor="bg-blue-100" textcolor="text-blue-800" />
-                <PriceCard title="Min Price" value={minPrice} bgcolor="bg-green-100" textcolor="text-green-800" />
-                <PriceCard title="Avg Price" value={avgPrice} bgcolor="bg-yellow-100" textcolor="text-yellow-800" />
-                <PriceCard title="Max Variance" value={`${maxVariance}%`} bgcolor="bg-purple-100" textcolor="text-purple-800" />
+                <div className="flex gap-2">
+                    <PriceCard title="Max Price" value={`₹${maxPrice}`} bgcolor="bg-blue-100" textcolor="text-blue-800" />
+                    <PriceCard title="Min Price" value={`₹${minPrice}`} bgcolor="bg-green-100" textcolor="text-green-800" />
+                    <PriceCard title="Average Price" value={`₹${avgPrice}`} bgcolor="bg-yellow-100" textcolor="text-yellow-800" />
+                    <PriceCard title="Max Variance" value={`${maxVariance}%`} bgcolor="bg-purple-100" textcolor="text-purple-800" />
+                </div>
             </div>
         </div>
     );
 };
 
 const PriceCard = ({ title, value, bgcolor, textcolor }) => (
-    <div className={`${bgcolor} p-4 rounded-md`}>
-        <h4 className={`text-lg font-medium ${textcolor}`}>{title}</h4>
-        <p className={`text-2xl font-bold ${textcolor}`}>
-            {typeof value === 'number' ? `₹${value}` : value}
-        </p>
+    <div className={`${bgcolor} px-2 py-1 rounded-md`}>
+        <h4 className={`text-xs font-medium ${textcolor}`}>{title}</h4>
+        <p className={`text-sm font-bold ${textcolor}`}>{value}</p>
     </div>
 );
+
+export default PriceAnalysisCard;
