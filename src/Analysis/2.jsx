@@ -4,13 +4,11 @@ import SearchDropdown from '../Components/Search';
 import { fetchItemData, processItemData, calculateClusterData } from '../utils/dataProcessing';
 import { TimeFrameSelector, PriceAnalysisCard } from '../Components/AnalysisComponents';
 import ItemSelector from '../Components/ItemTabs';
-import { motion } from 'framer-motion';
-// import { analyzeTomatoData } from '../utils/priceAnalysis';
 import PriceInsightsComponent from '../Components/PriceInsight';
 
 const Analysis2 = () => {
     const [timeFrame, setTimeFrame] = useState('all');
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedItem, setSelectedItem] = useState('tomatoLocal_500g.json');
     const [itemData, setItemData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -45,54 +43,24 @@ const Analysis2 = () => {
 
     const chartData = timeFrame === 'all' ? processedData : clusterData;
     return (
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="w-full mb-4">
+        <div className="w-full ">
+            <div className="mb-4 flex flex-col flex-wrap gap-2 bg-gradient-to-r from-my-red to-my-blue p-4  items-center">
                 <ItemSelector onFileSelect={setSelectedItem} />
-            </div>
-            <div className="mb-4">
                 <SearchDropdown onFileSelect={setSelectedItem} />
             </div>
-
-            {selectedItem && (
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="flex items-center space-x-4 bg-gradient-to-r from-purple-100 to-indigo-100 p-4 rounded-lg shadow-md mb-6"
-                >
-                    <motion.img
-                        src={itemData[0]?.imageUrl || '/placeholder-image.jpg'}
-                        alt={itemData[0]?.title || 'Selected Item'}
-                        className="w-12 h-12 sm:w-16 sm:h-16 rounded-full object-cover"
-                        whileHover={{ scale: 1.1 }}
-                    />
-                    <div>
-                        <motion.h2
-                            className="text-xl sm:text-2xl font-bold text-gray-800"
-                            layoutId="item-title"
-                        >
-                            {itemData[0]?.title || 'Selected Item'}
-                        </motion.h2>
-                        <motion.p
-                            className="text-sm sm:text-md text-gray-600"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                        >
-                            Analysis {timeFrame==='all'?' of Whole Period':` for Every ${timeFrame}`}
-                        </motion.p>
-                    </div>
-                </motion.div>
-            )}
-
+            <div>
+            {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
+            </div>
+            <div className='w-full sm:w-3/4 mx-0 sm:mx-40'>
             <TimeFrameSelector timeFrame={timeFrame} setTimeFrame={setTimeFrame} />
+            </div>
 
             {loading && <p>Loading...</p>}
             {error && <p className="text-red-500">{error}</p>}
 
             {!loading && !error && chartData.length > 0 ? (
-                <div className="h-64 sm:h-96 mb-8">
-                    <ResponsiveContainer width="100%" height="100%">
+                <div className="h-64 sm:h-96 mb-8 p-4 w-auto sm:w-3/4 mx-2 sm:mx-40  shadow-lg p-2">
+                    <ResponsiveContainer width="100%" height="100%" onResize={(width, height)=>{console.log(width, height);}}>
                         <LineChart data={chartData}>
                             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                             <XAxis dataKey={timeFrame === 'all' ? "visualDate" : "startTime"} />
@@ -116,11 +84,11 @@ const Analysis2 = () => {
                     </ResponsiveContainer>
                 </div>
             ) : (
-                <div className="h-64 sm:h-96 mb-8 bg-gray-200 animate-pulse rounded-lg"></div>
+                <div className="h-64 sm:h-96 mb-8 bg-gray-200 animate-pulse rounded-lg w-full sm:w-3/4 mx-0 sm:mx-40"></div>
             )}
 
-            {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
-            <div className="flex justify-center">
+            {/* {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />} */}
+            <div >
                 {selectedItem && (
                     <PriceInsightsComponent selectedItem={selectedItem} />
                 )}

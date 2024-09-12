@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Search } from 'lucide-react';
-// import { analyzeItemPrices } from '../utils/priceAnalysis';
-
+import { analyzeTomatoData } from '../utils/priceAnalysis';
 const categories = [
   { name: 'All', icon: '🍽️' },
   { name: 'Fruits', icon: '🍌' },
@@ -17,9 +16,9 @@ const SearchDropdown = ({ onFileSelect }) => {
   const [items, setItems] = useState([]);
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
   const [activeCategory, setActiveCategory] = useState('All');
-  // const [analyzedPrices, setAnalyzedPrices] = useState({ topVaryingPrices: [], staplePrices: [] });
   const containerRef = useRef(null);
   const [showCategories, setShowCategories] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -29,7 +28,7 @@ const SearchDropdown = ({ onFileSelect }) => {
     };
     fetchItems();
   }, []);
-  // debugger;
+
   useEffect(() => {
     const filteredItems = items.filter(item =>
       (activeCategory === 'All' || item.itemCategory === activeCategory) &&
@@ -41,7 +40,7 @@ const SearchDropdown = ({ onFileSelect }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
-        setSuggestions([]);
+        setShowDropdown(false);
         setSearchButtonClicked(false);
       }
     };
@@ -53,106 +52,85 @@ const SearchDropdown = ({ onFileSelect }) => {
 
   const handleItemClick = (filename) => {
     onFileSelect(filename);
-    setSuggestions([]);
+    setShowDropdown(false);
     setSearchButtonClicked(false);
   };
 
   const handleSearchButtonClick = () => {
-    // debugger;
     setSearchButtonClicked(true);
     const filteredItems = items.filter(item => activeCategory === 'All' || item.itemCategory === activeCategory);
     setSuggestions(filteredItems);
-    // const analyzed = analyzeItemPrices(filteredItems, activeCategory);
-    // setAnalyzedPrices(analyzed);
+    setShowDropdown(true);
   };
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
     const filteredItems = items.filter(item => category === 'All' || item.itemCategory === category);
     setSuggestions(filteredItems);
+    setShowDropdown(true);
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl" ref={containerRef}>
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Search for items..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onFocus={() => {
-            setShowCategories(true);
-            const filteredItems = items.filter(item => activeCategory === 'All' || item.itemCategory === activeCategory);
-            setSuggestions(filteredItems);
-          }}
-          className="w-full p-3 sm:p-4 pr-12 text-base sm:text-lg focus:outline-none transition-all duration-300 focus:bg-gray-100"
-        />
-        <button 
-          className="absolute right-2 sm:right-4 top-2 sm:top-4 bg-red-500 text-white p-2 rounded-full transition-all duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-          onClick={handleSearchButtonClick}
-        >
-          <Search size={20} />
-        </button>
+    <div className="w-full max-w-4xl relative shadow-lg" ref={containerRef}>
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Tomato Local"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={() => {
+              setShowCategories(true);
+              setShowDropdown(true);
+              const filteredItems = items.filter(item => activeCategory === 'All' || item.itemCategory === activeCategory);
+              setSuggestions(filteredItems);
+            }}
+            className="w-full p-2 sm:p-3 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none transition-all duration-300 focus:bg-gray-100"
+          />
+          <button 
+            className="absolute right-2 top-2 bg-red-500 text-white p-1 sm:p-2 rounded-full transition-all duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+            onClick={handleSearchButtonClick}
+          >
+            <Search size={16} className="sm:w-5 sm:h-5" />
+          </button>
+        </div>
+        
+        {showCategories && (
+          <div className="flex flex-wrap ">
+            {categories.map((category) => (
+              <button
+                key={category.name}
+                onClick={() => handleCategoryChange(category.name)}
+                className={`flex-1 py-1 sm:py-2 px-1 sm:px-2 text-center transition-all duration-300 ${activeCategory === category.name ? 'border-b-2 border-red-500 bg-red-100' : 'hover:bg-gray-100'}`}
+              >
+                <span className="text-lg sm:text-xl mr-1">
+                  {category.icon}
+                </span>
+                <span className="text-xs">{category.name}</span>
+              </button>
+            ))}
+          </div>
+        )}
+        
+        {showDropdown && (suggestions.length > 0 || searchButtonClicked) && (
+          <div className="absolute left-0 right-0 mt-1 sm:mt-2 bg-white border border-gray-200 rounded-b-lg shadow-lg max-h-48 sm:max-h-60 overflow-y-auto z-10">
+            {suggestions.map((item, index) => (
+              <div 
+                key={index} 
+                className="flex items-center p-2 sm:p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 transition-all duration-300" 
+                onClick={() => handleItemClick(item.filename)}
+              >
+                <img src={item.imageUrl} alt={item.title} className="w-8 h-8 sm:w-12 sm:h-12 object-cover mr-2 sm:mr-3 rounded" />
+                <div className='flex space-x-4'>
+                  <h3 className="font-semibold text-xs sm:text-sm">{item.title}</h3>
+                  <p className="text-xs text-gray-600">{item.quantity}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {analyzeTomatoData}
       </div>
-      
-      {showCategories && (
-        <div className="flex flex-wrap border-b">
-          {categories.map((category) => (
-            <button
-              key={category.name}
-              onClick={() => handleCategoryChange(category.name)}
-              className={`flex-1 py-2 sm:py-3 px-2 sm:px-4 text-center transition-all duration-300 ${activeCategory === category.name ? 'border-b-2 border-red-500 bg-red-100' : 'hover:bg-gray-100'}`}
-            >
-              <span className="text-xl sm:text-2xl mr-1 sm:mr-2">
-                {category.icon}
-              </span>
-              <span className="text-xs sm:text-sm">{category.name}</span>
-            </button>
-          ))}
-        </div>
-      )}
-      
-      {(suggestions.length > 0 || searchButtonClicked) && (
-        <div className="mt-2 bg-white border-t border-gray-200 max-h-60 overflow-y-auto">
-          {suggestions.map((item, index) => (
-            <div 
-              key={index} 
-              className="flex items-center p-3 sm:p-4 hover:bg-gray-100 cursor-pointer border-b border-gray-200 transition-all duration-300" 
-              onClick={() => handleItemClick(item.filename)}
-            >
-              <img src={item.imageUrl} alt={item.title} className="w-12 h-12 sm:w-16 sm:h-16 object-cover mr-3 sm:mr-4 rounded" />
-              <div>
-                <h3 className="font-semibold text-sm sm:text-base">{item.title}</h3>
-                <p className="text-xs sm:text-sm text-gray-600">{item.quantity}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* {searchButtonClicked && (
-        <div className="p-4">
-          <h2 className="text-xl font-bold mb-4">Top Varying Prices</h2>
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            {analyzedPrices.topVaryingPrices.map((item, index) => (
-              <div key={index} className="bg-gray-100 p-4 rounded-lg transition-all duration-300 hover:shadow-md">
-                <h3 className="font-semibold">{item.title}</h3>
-                <p>{item.quantity}</p>
-              </div>
-            ))}
-          </div>
-          
-          <h2 className="text-xl font-bold mb-4">Staple Prices</h2>
-          <div className="grid grid-cols-2 gap-4">
-            {analyzedPrices.staplePrices.map((item, index) => (
-              <div key={index} className="bg-gray-100 p-4 rounded-lg transition-all duration-300 hover:shadow-md">
-                <h3 className="font-semibold">{item.title}</h3>
-                <p>{item.quantity}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      )} */}
     </div>
   );
 };
