@@ -5,28 +5,37 @@ const Header = () => {
   const [hoverButton, setHoverButton] = useState('');
 
   const buttons = [
-    { name: 'Project Details', href: '#' },
-    { name: 'Hire Me', href: '#' },
+    { name: 'Hire Me', href: 'https://www.linkedin.com/in/devansh-choudhary-2381041b1/'},
   ];
 
   return (
-    <header className="bg-[#4B00A9] p-2 sm:p-4 shadow-lg mb-4">
+    <header className="bg-my-purple p-2 sm:p-4 shadow-lg mb-4">
       <div className="container flex justify-end">
         <div className="flex items-center space-x-4 sm:space-x-6">
-          {buttons.map((button) => (
+            <div 
+            className='text-white text-sm sm:text-lg font-semibold transition-colors duration-300 group-hover:text-yellow-300'
+            onMouseEnter={() => setHoverButton('Project Details')}
+            onMouseLeave={() => setHoverButton('')}
+            onClick={() => document.getElementById('Project Details').scrollIntoView({
+              behavior: 'smooth'
+            })}
+            >
+              <span>Project Details</span>
+            </div>       
             <a
-              key={button.name}
-              href={button.href}
+              key='Hire Me'
+              href='https://www.linkedin.com/in/devansh-choudhary-2381041b1/'
               className="relative group"
-              onMouseEnter={() => setHoverButton(button.name)}
+              onMouseEnter={() => setHoverButton('Hire Me')}
               onMouseLeave={() => setHoverButton('')}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <span className="text-white text-sm sm:text-lg font-semibold transition-colors duration-300 group-hover:text-yellow-300">
-                {button.name}
+              Hire Me
               </span>
-              <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-300 transition-all duration-300 ${hoverButton === button.name ? 'w-full' : ''}`}></span>
+              <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-300 transition-all duration-300 ${hoverButton === 'Hire Me' ? 'w-full' : ''}`}></span>
             </a>
-          ))}
           <a
             href="https://github.com/devanshchoudhary20/BIZPrize"
             target="_blank"

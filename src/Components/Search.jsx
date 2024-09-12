@@ -16,9 +16,9 @@ const SearchDropdown = ({ onFileSelect }) => {
   const [items, setItems] = useState([]);
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
   const [activeCategory, setActiveCategory] = useState('All');
-  // const [analyzedPrices, setAnalyzedPrices] = useState({ topVaryingPrices: [], staplePrices: [] });
   const containerRef = useRef(null);
   const [showCategories, setShowCategories] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -28,7 +28,7 @@ const SearchDropdown = ({ onFileSelect }) => {
     };
     fetchItems();
   }, []);
-  // debugger;
+
   useEffect(() => {
     const filteredItems = items.filter(item =>
       (activeCategory === 'All' || item.itemCategory === activeCategory) &&
@@ -40,7 +40,7 @@ const SearchDropdown = ({ onFileSelect }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
-        setSuggestions([]);
+        setShowDropdown(false);
         setSearchButtonClicked(false);
       }
     };
@@ -52,7 +52,7 @@ const SearchDropdown = ({ onFileSelect }) => {
 
   const handleItemClick = (filename) => {
     onFileSelect(filename);
-    setSuggestions([]);
+    setShowDropdown(false);
     setSearchButtonClicked(false);
   };
 
@@ -60,26 +60,28 @@ const SearchDropdown = ({ onFileSelect }) => {
     setSearchButtonClicked(true);
     const filteredItems = items.filter(item => activeCategory === 'All' || item.itemCategory === activeCategory);
     setSuggestions(filteredItems);
-
+    setShowDropdown(true);
   };
 
   const handleCategoryChange = (category) => {
     setActiveCategory(category);
     const filteredItems = items.filter(item => category === 'All' || item.itemCategory === category);
     setSuggestions(filteredItems);
+    setShowDropdown(true);
   };
 
   return (
-    <div className="w-full max-w-4xl relative" ref={containerRef}>
+    <div className="w-full max-w-4xl relative shadow-lg" ref={containerRef}>
       <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
         <div className="relative">
           <input
             type="text"
-            placeholder="Search for items..."
+            placeholder="Tomato Local"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onFocus={() => {
               setShowCategories(true);
+              setShowDropdown(true);
               const filteredItems = items.filter(item => activeCategory === 'All' || item.itemCategory === activeCategory);
               setSuggestions(filteredItems);
             }}
@@ -94,7 +96,7 @@ const SearchDropdown = ({ onFileSelect }) => {
         </div>
         
         {showCategories && (
-          <div className="flex flex-wrap border-b">
+          <div className="flex flex-wrap ">
             {categories.map((category) => (
               <button
                 key={category.name}
@@ -110,7 +112,7 @@ const SearchDropdown = ({ onFileSelect }) => {
           </div>
         )}
         
-        {(suggestions.length > 0 || searchButtonClicked) && (
+        {showDropdown && (suggestions.length > 0 || searchButtonClicked) && (
           <div className="absolute left-0 right-0 mt-1 sm:mt-2 bg-white border border-gray-200 rounded-b-lg shadow-lg max-h-48 sm:max-h-60 overflow-y-auto z-10">
             {suggestions.map((item, index) => (
               <div 
@@ -119,7 +121,7 @@ const SearchDropdown = ({ onFileSelect }) => {
                 onClick={() => handleItemClick(item.filename)}
               >
                 <img src={item.imageUrl} alt={item.title} className="w-8 h-8 sm:w-12 sm:h-12 object-cover mr-2 sm:mr-3 rounded" />
-                <div>
+                <div className='flex space-x-4'>
                   <h3 className="font-semibold text-xs sm:text-sm">{item.title}</h3>
                   <p className="text-xs text-gray-600">{item.quantity}</p>
                 </div>

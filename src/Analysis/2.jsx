@@ -8,7 +8,7 @@ import PriceInsightsComponent from '../Components/PriceInsight';
 
 const Analysis2 = () => {
     const [timeFrame, setTimeFrame] = useState('all');
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedItem, setSelectedItem] = useState('tomatoLocal_500g.json');
     const [itemData, setItemData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -44,22 +44,23 @@ const Analysis2 = () => {
     const chartData = timeFrame === 'all' ? processedData : clusterData;
     return (
         <div className="w-full ">
-            <div className="mb-4 flex flex-col flex-wrap gap-2 bg-gradient-to-r from-[#FF071F] to-[#0131A0] p-4  items-center">
+            <div className="mb-4 flex flex-col flex-wrap gap-2 bg-gradient-to-r from-my-red to-my-blue p-4  items-center">
                 <ItemSelector onFileSelect={setSelectedItem} />
                 <SearchDropdown onFileSelect={setSelectedItem} />
             </div>
             <div>
             {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
             </div>
-
+            <div className='w-full sm:w-3/4 mx-0 sm:mx-40'>
             <TimeFrameSelector timeFrame={timeFrame} setTimeFrame={setTimeFrame} />
+            </div>
 
             {loading && <p>Loading...</p>}
             {error && <p className="text-red-500">{error}</p>}
 
             {!loading && !error && chartData.length > 0 ? (
-                <div className="h-64 sm:h-96 mb-8 p-4 w-full sm:w-3/4 mx-0 sm:mx-40  shadow-lg p-2">
-                    <ResponsiveContainer width="100%" height="100%">
+                <div className="h-64 sm:h-96 mb-8 p-4 w-auto sm:w-3/4 mx-2 sm:mx-40  shadow-lg p-2">
+                    <ResponsiveContainer width="100%" height="100%" onResize={(width, height)=>{console.log(width, height);}}>
                         <LineChart data={chartData}>
                             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                             <XAxis dataKey={timeFrame === 'all' ? "visualDate" : "startTime"} />
@@ -83,11 +84,11 @@ const Analysis2 = () => {
                     </ResponsiveContainer>
                 </div>
             ) : (
-                <div className="h-64 sm:h-96 mb-8 bg-gray-200 animate-pulse rounded-lg"></div>
+                <div className="h-64 sm:h-96 mb-8 bg-gray-200 animate-pulse rounded-lg w-full sm:w-3/4 mx-0 sm:mx-40"></div>
             )}
 
             {/* {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />} */}
-            <div className="flex">
+            <div >
                 {selectedItem && (
                     <PriceInsightsComponent selectedItem={selectedItem} />
                 )}

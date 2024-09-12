@@ -34,7 +34,7 @@ const ItemSelector = ({ onFileSelect }) => {
         <motion.button
           key={index}
           onClick={() => handleClick(item.filename)}
-          className={`flex items-center space-x-1 sm:space-x-2 p-1 sm:p-2 rounded-full shadow-md transition-colors duration-300 ${
+          className={`flex items-center space-x-1 sm:space-x-2 p-1 sm:p-2 rounded-full border border-[rgba(255,255,254,0.3)] shadow-md transition-colors duration-300 ${
             selectedFile === item.filename
               ? "bg-white text-[#FF071F]"
               : "bg-transparent text-white hover:bg-white hover:text-[#FF071F]"
