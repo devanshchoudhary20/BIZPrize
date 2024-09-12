@@ -10,16 +10,16 @@ const ItemSelector = ({ onFileSelect }) => {
     onFileSelect(filename);
   };
 
-  const specificItems = [
-    "Baby Orange",
-    "Tomato Local",
-    "Ice Apple",
-    "Cauliflower",
-    "Banana Raw"
-  ];
-
   useEffect(() => {
     const fetchItems = async () => {
+      const specificItems = [
+        "Baby Orange",
+        "Tomato Local",
+        "Ice Apple",
+        "Cauliflower",
+        "Banana Raw"
+      ];
+
       const response = await fetch('https://storage.googleapis.com/clone-206ad.appspot.com/items/index_new.json');
       const data = await response.json();
       const filteredItems = data.filter(item => specificItems.includes(item.title));
