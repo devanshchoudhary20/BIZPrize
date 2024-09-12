@@ -2,7 +2,7 @@ import React from 'react';
 
 const ProjectDetails = () => {
   return (
-    <div className="mx-40 w-3/4">
+    <div className="p-4 w-full sm:w-3/4 mx-0 sm:mx-40 mb-4">
       {/* Inspiration Section */}
       <section className="mb-12 border-2 border-blue-300 p-6 rounded-lg bg-white text-start">
         <h2 className="text-2xl font-bold mb-4">

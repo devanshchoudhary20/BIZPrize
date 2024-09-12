@@ -58,7 +58,7 @@ const Analysis2 = () => {
             {error && <p className="text-red-500">{error}</p>}
 
             {!loading && !error && chartData.length > 0 ? (
-                <div className="h-64 sm:h-96 mb-8 w-3/4 mx-40 shadow-lg p-2">
+                <div className="h-64 sm:h-96 mb-8 p-4 w-full sm:w-3/4 mx-0 sm:mx-40  shadow-lg p-2">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={chartData}>
                             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />

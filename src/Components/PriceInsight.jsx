@@ -84,36 +84,31 @@ const PriceInsightsComponent = ({ selectedItem }) => {
   );
 
   const renderFinalInsights = () => (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-8 border-2 ">
-      <h3 className="text-2xl font-bold mb-4 text-green-600 border-b-2 text-start">😊 Best Time to Buy </h3>
-      <ul className="space-y-4 mb-16 ">
-        <li className="flex items-center">
-          <span className="mr-2">✅</span>
-          Day: <HighlightedText>{finalInsights.bestDay.day}</HighlightedText> (lowest average price of <HighlightedText>₹{finalInsights.bestDay.price.toFixed(2)}</HighlightedText>)
+    <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-8 border-2 text-sm sm:text-base">
+      <h3 className="text-xl sm:text-2xl font-bold mb-4 text-green-600 border-b-2 text-start">😊 Best Time to Buy </h3>
+      <ul className="space-y-3 sm:space-y-4 mb-12 sm:mb-16 text-end">
+        <li className="flex flex-col sm:flex-row sm:flex-nowrap flex-wrap items-center ">
+         
+          <span>✅ Day: <HighlightedText>{finalInsights.bestDay.day}</HighlightedText> (lowest average price of <HighlightedText>₹{finalInsights.bestDay.price.toFixed(2)}</HighlightedText>)</span>
         </li>
-        <li className="flex items-center">
-          <span className="mr-2">✅</span>
-          Time: Consider buying in the <HighlightedText>{finalInsights.bestTimeSlot[0].split('-')[0] < 12 ? 'morning' : 'evening'}</HighlightedText>, particularly between <HighlightedText>{finalInsights.bestTimeSlot[0]}</HighlightedText>, as prices tend to decrease the most during this time.
+        <li className="flex flex-col sm:flex-row  items-center text-start">
+          <span>✅ Time: Consider buying in the <HighlightedText>{finalInsights.bestTimeSlot[0].split('-')[0] < 12 ? 'morning' : 'evening'}</HighlightedText>, particularly between <HighlightedText>{finalInsights.bestTimeSlot[0]}</HighlightedText>, as prices tend to decrease the most during this time.</span>
         </li>
-        <li className="flex items-center">
-          <span className="mr-2">✅</span>
-          Weather: Look for <HighlightedText>{finalInsights.bestWeather.condition}</HighlightedText> conditions (Avg. price: <HighlightedText>₹{finalInsights.bestWeather.averagePrice.toFixed(2)}</HighlightedText>, {finalInsights.bestWeather.count} occurrences).
+        <li className="flex flex-col sm:flex-row sm:flex-nowrap flex-wrap items-center text-start">
+          <span>✅ Weather: Look for <HighlightedText>{finalInsights.bestWeather.condition}</HighlightedText> conditions (Avg. price: <HighlightedText>₹{finalInsights.bestWeather.averagePrice.toFixed(2)}</HighlightedText>, {finalInsights.bestWeather.count} occurrences).</span>
         </li>
       </ul>
       
-      <h3 className="text-2xl font-bold mb-4 text-red-600 text-start border-b-2">😠 Worst Time to Buy </h3>
-      <ul className="space-y-2">
-        <li className="flex items-center">
-          <span className="mr-2">❌</span>
-          Day: <HighlightedText color="#c62828">{finalInsights.worstDay.day}</HighlightedText> (highest average price of <HighlightedText color="#c62828">₹{finalInsights.worstDay.price.toFixed(2)}</HighlightedText>)
+      <h3 className="text-xl sm:text-2xl font-bold mb-4 text-red-600 text-start border-b-2">😠 Worst Time to Buy </h3>
+      <ul className="space-y-2 sm:space-y-3">
+        <li className="flex flex-col sm:flex-row sm:flex-nowrap flex-wrap items-center text-start">
+          <span>❌ Day: <HighlightedText color="#c62828">{finalInsights.worstDay.day}</HighlightedText> (highest average price of <HighlightedText color="#c62828">₹{finalInsights.worstDay.price.toFixed(2)}</HighlightedText>)</span>
         </li>
-        <li className="flex items-center">
-          <span className="mr-2">❌</span>
-          Time: Avoid buying between <HighlightedText color="#c62828">{finalInsights.worstTimeSlot[0]}</HighlightedText>, as prices tend to increase during this time.
+        <li className="flex flex-col sm:flex-row sm:flex-nowrap flex-wrap items-center text-start">
+          <span>❌ Time: Avoid buying between <HighlightedText color="#c62828">{finalInsights.worstTimeSlot[0]}</HighlightedText>, as prices tend to increase during this time.</span>
         </li>
-        <li className="flex items-center">
-          <span className="mr-2">❌</span>
-          Weather: Avoid buying during <HighlightedText color="#c62828">{finalInsights.worstWeather.condition}</HighlightedText> conditions (Avg. price: <HighlightedText color="#c62828">₹{finalInsights.worstWeather.averagePrice.toFixed(2)}</HighlightedText>).
+        <li className="flex flex-col sm:flex-row sm:flex-nowrap flex-wrap items-center text-start">
+          <span>❌ Weather: Avoid buying during <HighlightedText color="#c62828">{finalInsights.worstWeather.condition}</HighlightedText> conditions (Avg. price: <HighlightedText color="#c62828">₹{finalInsights.worstWeather.averagePrice.toFixed(2)}</HighlightedText>).</span>
         </li>
       </ul>
     </div>
@@ -128,41 +123,41 @@ const PriceInsightsComponent = ({ selectedItem }) => {
   };
 
   const renderDetailedAnalysis = () => (
-    <div className="mt-8">
+    <div className="mt-6 sm:mt-8">
       {renderWeatherAnalysis()}
     </div>
   );
 
   const renderWeatherAnalysis = () => (
-    <div className="mb-8 p-4 bg-gray-100 rounded-lg shadow-sm">
-      <h3 className="text-lg font-semibold mb-3">Weather Impact Analysis</h3>
-      <div className="flex flex-col lg:flex-row gap-4">
-        <div className="flex-1 h-80">
+    <div className="mb-6 sm:mb-8 p-3 sm:p-4 bg-gray-100 rounded-lg shadow-sm text-sm sm:text-base">
+      <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3">Weather Impact Analysis</h3>
+      <div className="flex flex-col lg:flex-row gap-3 sm:gap-4">
+        <div className="flex-1 h-64 sm:h-80">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={weatherChartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="label" tick={{fontSize: 12}} />
-              <YAxis tick={{fontSize: 12}} />
+              <XAxis dataKey="label" tick={{fontSize: 10}} />
+              <YAxis tick={{fontSize: 10}} />
               <Tooltip />
               <Line type="monotone" dataKey="averagePrice" stroke="#8884d8" />
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <div className="flex-1 h-80 overflow-auto">
-          <table className="w-full text-sm">
+        <div className="flex-1 h-64 sm:h-80 overflow-auto">
+          <table className="w-full text-xs sm:text-sm">
             <thead className="sticky top-0 bg-white">
               <tr>
-                <th className="p-2 text-left">Weather</th>
-                <th className="p-2 text-left">Avg Price</th>
-                <th className="p-2 text-left">Count</th>
+                <th className="p-1 sm:p-2 text-left">Weather</th>
+                <th className="p-1 sm:p-2 text-left">Avg Price</th>
+                <th className="p-1 sm:p-2 text-left">Count</th>
               </tr>
             </thead>
             <tbody>
               {weatherChartData.map((item, index) => (
                 <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : ''}>
-                  <td className="p-2">{item.label}</td>
-                  <td className="p-2">₹{item.averagePrice.toFixed(2)}</td>
-                  <td className="p-2">{item.count}</td>
+                  <td className="p-1 sm:p-2">{item.label}</td>
+                  <td className="p-1 sm:p-2">₹{item.averagePrice.toFixed(2)}</td>
+                  <td className="p-1 sm:p-2">{item.count}</td>
                 </tr>
               ))}
             </tbody>
@@ -181,7 +176,7 @@ const PriceInsightsComponent = ({ selectedItem }) => {
   // const dayofweekChartData = formatDataForChart(dayofweekData, 'averagePrice');
 
   return (
-    <div className="font-inter mt-16 w-3/4 mx-40">
+    <div className="font-inter mt-16 w-full sm:w-3/4 mx-0 sm:mx-40">
       
       {Object.keys(finalInsights).length > 0 && renderFinalInsights()}
       

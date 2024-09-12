@@ -10,7 +10,7 @@ export const TimeFrameSelector = ({ timeFrame, setTimeFrame }) => {
     ];
 
     return (
-        <div className="flex gap-2 mb-4 mx-40 w-3/4">
+        <div className="flex gap-2 p-4 w-full sm:w-3/4 mx-0 sm:mx-40 mb-4">
             {buttons.map(({ label, value }) => (
                 <button
                     key={value}
@@ -50,14 +50,14 @@ export const PriceAnalysisCard = ({ item, itemData }) => {
     const maxVariance = ((maxPrice / minPrice - 1) * 100).toFixed(2);
 
     return (
-        <div className="bg-white shadow-lg rounded-lg p-4 w-3/4 mx-40 mb-4 ">
-            <div className="flex items-center justify-between">
-                <div className='flex '>
-                    <img src={item.imageUrl} alt={item.title} className="w-16 h-16 object-cover rounded-full mr-4" />
+        <div className="bg-white shadow-lg rounded-lg p-4 w-full sm:w-3/4 mx-0 sm:mx-40 mb-4 ">
+            <div className="flex items-center justify-between sm:flex-row flex-col items-center space-y-4 sm:space-y-0">
+                <div className=' flex flex-row items-center mr-4'>
+                    <img src={item.imageUrl} alt={item.title} className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-full mr-4" />
                     <div >
                         
-                        <h2 className="text-xl font-bold text-gray-800">{item.title}</h2>
-                        <p className="text-sm text-gray-600">Analysis of last 2 months</p>
+                        <h2 className="text-sm sm:text-xl font-bold text-gray-800">{item.title}</h2>
+                        <p className="text-xs sm:text-sm text-gray-600">Analysis of last 2 months</p>
                     </div>
                 </div>
                 <div className="flex gap-2">
@@ -79,3 +79,15 @@ const PriceCard = ({ title, value, bgcolor, textcolor }) => (
 );
 
 export default PriceAnalysisCard;
+
+
+
+
+
+
+
+
+
+
+
+

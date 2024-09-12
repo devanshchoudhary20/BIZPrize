@@ -16,7 +16,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#4B00A9] p-2 sm:p-4 shadow-lg mb-4">
+    <header className="bg-gradient-to-r from-purple-600 to-purple-800 p-4 sm:p-6 shadow-lg mb-4">
       <div className="container  flex justify-end">
         <div className="flex justify-end items-center">
           
