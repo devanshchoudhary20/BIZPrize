@@ -3,18 +3,21 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, L
 import { analyzeTomatoData } from '../utils/priceAnalysis';
 
 const PriceInsightsComponent = ({ selectedItem }) => {
-  const [volatilityData, setVolatilityData] = useState([]);
+  // const [volatilityData, setVolatilityData] = useState([]);
   const [weatherData, setWeatherData] = useState({});
-  const [dayofweekData, setDayofweekData] = useState({});
+  // const [dayofweekData, setDayofweekData] = useState({});
   const [finalInsights, setFinalInsights] = useState({});
+
+  // console.log(volatilityData);
+  // console.log(dayofweekData);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const analyzed = await analyzeTomatoData(selectedItem);
-        setVolatilityData(analyzed.volatilityByRange || []);
+        // setVolatilityData(analyzed.volatilityByRange || []);
         setWeatherData(analyzed.averagePriceByWeather || {});
-        setDayofweekData(analyzed.averagePriceByDay || {});
+        // setDayofweekData(analyzed.averagePriceByDay || {});
         generateFinalInsights(analyzed.volatilityByRange, analyzed.averagePriceByWeather, analyzed.averagePriceByDay);
       } catch (error) {
         console.error("Error analyzing data:", error);
