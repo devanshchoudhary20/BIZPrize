@@ -12,6 +12,7 @@ const categories = [
 
 const SearchDropdown = ({ onFileSelect }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [placeholder, setPlaceholder] = useState('Tomato Local');
   const [suggestions, setSuggestions] = useState([]);
   const [items, setItems] = useState([]);
   const [searchButtonClicked, setSearchButtonClicked] = useState(false);
@@ -50,8 +51,10 @@ const SearchDropdown = ({ onFileSelect }) => {
     };
   }, []);
 
-  const handleItemClick = (filename) => {
-    onFileSelect(filename);
+  const handleItemClick = (item) => {
+    setPlaceholder(item.title);
+    setSearchTerm('');
+    onFileSelect(item.filename);
     setShowDropdown(false);
     setSearchButtonClicked(false);
   };
@@ -76,7 +79,7 @@ const SearchDropdown = ({ onFileSelect }) => {
         <div className="relative">
           <input
             type="text"
-            placeholder="Tomato Local"
+            placeholder={placeholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onFocus={() => {
@@ -85,13 +88,13 @@ const SearchDropdown = ({ onFileSelect }) => {
               const filteredItems = items.filter(item => activeCategory === 'All' || item.itemCategory === activeCategory);
               setSuggestions(filteredItems);
             }}
-            className="w-full p-2 sm:p-3 pr-10 sm:pr-12 text-sm sm:text-base focus:outline-none transition-all duration-300 focus:bg-gray-100"
+            className="w-full p-2 md:p-3 pr-10 md:pr-12 text-sm md:text-base focus:outline-none transition-all duration-300 focus:bg-gray-100"
           />
           <button 
-            className="absolute right-2 top-2 bg-red-500 text-white p-1 sm:p-2 rounded-full transition-all duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-red-500 text-white p-1 md:p-2 rounded-full transition-all duration-300 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             onClick={handleSearchButtonClick}
           >
-            <Search size={16} className="sm:w-5 sm:h-5" />
+            <Search size={16} className="w-4 h-4 md:w-5 md:h-5" />
           </button>
         </div>
         
@@ -101,28 +104,28 @@ const SearchDropdown = ({ onFileSelect }) => {
               <button
                 key={category.name}
                 onClick={() => handleCategoryChange(category.name)}
-                className={`flex-1 py-1 sm:py-2 px-1 sm:px-2 text-center transition-all duration-300 ${activeCategory === category.name ? 'border-b-2 border-red-500 bg-red-100' : 'hover:bg-gray-100'}`}
+                className={`flex-1 py-1 md:py-2 px-1 md:px-2 text-center transition-all duration-300 ${activeCategory === category.name ? 'border-b-2 border-red-500 bg-red-100' : 'hover:bg-gray-100'}`}
               >
-                <span className="text-lg sm:text-xl mr-1">
+                <span className="text-base md:text-xl mr-1">
                   {category.icon}
                 </span>
-                <span className="text-xs">{category.name}</span>
+                <span className="text-xs md:text-sm">{category.name}</span>
               </button>
             ))}
           </div>
         )}
         
         {showDropdown && (suggestions.length > 0 || searchButtonClicked) && (
-          <div className="absolute left-0 right-0 mt-1 sm:mt-2 bg-white border border-gray-200 rounded-b-lg shadow-lg max-h-48 sm:max-h-60 overflow-y-auto z-10">
+          <div className="absolute left-0 right-0 mt-1 md:mt-2 bg-white border border-gray-200 rounded-b-lg shadow-lg max-h-48 md:max-h-60 overflow-y-auto z-10">
             {suggestions.map((item, index) => (
               <div 
                 key={index} 
-                className="flex items-center p-2 sm:p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 transition-all duration-300" 
-                onClick={() => handleItemClick(item.filename)}
+                className="flex items-center p-2 md:p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-200 transition-all duration-300" 
+                onClick={() => handleItemClick(item)}
               >
-                <img src={item.imageUrl} alt={item.title} className="w-8 h-8 sm:w-12 sm:h-12 object-cover mr-2 sm:mr-3 rounded" />
-                <div className='flex space-x-4'>
-                  <h3 className="font-semibold text-xs sm:text-sm">{item.title}</h3>
+                <img src={item.imageUrl} alt={item.title} className="w-8 h-8 md:w-12 md:h-12 object-cover mr-2 md:mr-3 rounded" />
+                <div className='flex flex-col md:flex-row md:space-x-4'>
+                  <h3 className="font-semibold text-xs md:text-sm">{item.title}</h3>
                   <p className="text-xs text-gray-600">{item.quantity}</p>
                 </div>
               </div>

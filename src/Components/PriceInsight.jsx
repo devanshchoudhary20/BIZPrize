@@ -3,13 +3,47 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, L
 import { analyzeTomatoData } from '../utils/priceAnalysis';
 
 const PriceInsightsComponent = ({ selectedItem }) => {
-  // const [volatilityData, setVolatilityData] = useState([]);
   const [weatherData, setWeatherData] = useState({});
-  // const [dayofweekData, setDayofweekData] = useState({});
   const [finalInsights, setFinalInsights] = useState({});
 
-  // console.log(volatilityData);
-  // console.log(dayofweekData);
+  const hourFormat = (hour) => {
+    if(hour === '0-2'){
+      return '12 am - 2 am '
+    }
+    else if(hour === '2-4'){
+      return '2 am - 4 am'
+    }
+    else if(hour === '4-6'){
+      return '4 am - 6 am'
+    }
+    else if(hour === '6-8'){
+      return '6 am - 8 am'
+    }
+    else if(hour === '8-10'){
+      return '8 am - 10 am'
+    }
+    else if(hour === '10-12'){
+      return '10 am - 12 am'
+    }
+    else if(hour === '12-14'){
+      return '12 pm - 2 pm'
+    }
+    else if(hour === '14-16'){
+      return '2 pm - 4 pm'
+    }
+    else if(hour === '16-18'){
+      return '4 pm - 6 pm'
+    }
+    else if(hour === '18-20'){
+      return '6 pm - 8 pm'
+    }
+    else if(hour === '20-22'){
+      return '8 pm - 10 pm'
+    }
+    else if(hour === '22-0'){
+      return '10 pm - 12 am'
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +62,10 @@ const PriceInsightsComponent = ({ selectedItem }) => {
   }, [selectedItem]);
 
   const generateFinalInsights = (volatility, weather, dayofweek) => {
+    console.log('weather',weather);
+    console.log('dayofweek',dayofweek);
+    console.log('volatility',volatility);
+
     const bestDay = Object.entries(dayofweek).reduce((min, [day, data]) => 
       data.averagePrice < min.price ? { day, price: data.averagePrice } : min, 
       { day: '', price: Infinity }
@@ -39,26 +77,33 @@ const PriceInsightsComponent = ({ selectedItem }) => {
     );
 
     const bestTimeSlot = volatility.reduce((min, curr) => 
-      curr[1].avgDirectionalChange < min[1].avgDirectionalChange ? curr : min
+      curr[1].avgPrice < min[1].avgPrice ? curr : min
     );
 
     const worstTimeSlot = volatility.reduce((max, curr) => 
-      curr[1].avgDirectionalChange > max[1].avgDirectionalChange ? curr : max
+      curr[1].avgPrice > max[1].avgPrice ? curr : max
     );
 
-    const bestWeather = Object.entries(weather).reduce((min, [condition, data]) => 
-      data.averagePrice < min.price && data.count >= 50 ? { condition, ...data } : min, 
-      { condition: '', price: Infinity, count: 0 }
+    const worstWeather = Object.entries(weather).reduce((_, [condition, data], index) => 
+      index === 0 ? { condition, ...data } : _, 
+      { condition: '', averagePrice: 0, count: 0 }
     );
 
-    const alternativeWeather = Object.entries(weather).reduce((best, [condition, data]) => 
-      data.averagePrice < best.price && data.count >= 50 && condition !== bestWeather.condition ? { condition, ...data } : best, 
-      { condition: '', price: Infinity, count: 0 }
+    const bestWeather = Object.entries(weather).reduce((acc, [condition, data], index, array) => 
+      index === array.length - 1 ? { condition, ...data } : acc, 
+      { condition: '', averagePrice: 0, count: 0 }
     );
 
-    const worstWeather = Object.entries(weather).reduce((max, [condition, data]) => 
-      data.averagePrice > max.price && data.count >= 50 ? { condition, ...data } : max, 
-      { condition: '', price: -Infinity, count: 0 }
+    const alternativeBestWeather = Object.entries(weather)
+    .filter(([_, data]) => data.count > 10)
+    .reduce((min, [condition, data]) => 
+      data.averagePrice < min.averagePrice ? { condition, ...data } : min, 
+      { condition: '', averagePrice: Infinity, count: 0 }
+    );
+
+    const alternativeWorstWeather = Object.entries(weather).reduce((_, [condition, data], index) => 
+      index === 1 ? { condition, ...data } : _, 
+      { condition: '', averagePrice: 0, count: 0 }
     );
 
     const mostCommonWeather = Object.entries(weather).reduce((max, [condition, data]) => 
@@ -75,43 +120,47 @@ const PriceInsightsComponent = ({ selectedItem }) => {
       bestTimeSlot,
       worstTimeSlot,
       bestWeather,
-      alternativeWeather,
+      alternativeBestWeather,
+      alternativeWorstWeather,
       worstWeather,
       mostCommonWeather,
       overallAveragePrice
     });
   };
 
+  
+
   const HighlightedText = ({ children, color = '#4CAF50' }) => (
     <span style={{ fontWeight: 'bold', color: color }}>{children}</span>
   );
 
   const renderFinalInsights = () => (
-    <div className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-8  text-sm sm:text-base">
+    <div className="bg-white rounded-lg p-4 sm:p-6 mb-8 text-sm sm:text-base shadow-lg">
       <h3 className="text-xl sm:text-2xl font-bold mb-4 text-green-600 border-b-2 text-start">😊 Best Time to Buy </h3>
       <ul className="space-y-3 sm:space-y-4 mb-12 sm:mb-16 text-start">
         <li >
          
-          <span className="text-start">✅ Day: <HighlightedText>{finalInsights.bestDay.day}</HighlightedText> (lowest average price of <HighlightedText>₹{finalInsights.bestDay.price.toFixed(2)}</HighlightedText>)</span>
+          <span className="text-start">✅ <span className='font-bold'>Day</span>: <HighlightedText>{finalInsights.bestDay.day}</HighlightedText> (lowest average price of <HighlightedText>₹{finalInsights.bestDay.price.toFixed(2)}</HighlightedText>)</span>
         </li>
         <li >
-          <span className="text-start">✅ Time: Consider buying in the <HighlightedText>{finalInsights.bestTimeSlot[0].split('-')[0] < 12 ? 'morning' : 'evening'}</HighlightedText>, particularly between <HighlightedText>{finalInsights.bestTimeSlot[0]}</HighlightedText>, as prices tend to decrease the most during this time.</span>
+          <span className="text-start">✅ <span className='font-bold'>Time</span>: Consider buying in the <HighlightedText>{finalInsights.bestTimeSlot[0].split('-')[0] < 12 ? 'morning' : 'evening'}</HighlightedText>, particularly between <HighlightedText>{hourFormat(finalInsights.bestTimeSlot[0])}</HighlightedText>, as prices tend to decrease the most during this time.</span>
         </li>
         <li >
-          <span className="text-start">✅ Weather: Look for <HighlightedText>{finalInsights.bestWeather.condition}</HighlightedText> conditions (Avg. price: <HighlightedText>₹{finalInsights.bestWeather.averagePrice.toFixed(2)}</HighlightedText>, {finalInsights.bestWeather.count} occurrences).</span>
+          <span className="text-start">✅ <span className='font-bold'>Weather</span>: Look for <HighlightedText>{finalInsights.bestWeather.condition}</HighlightedText> conditions (Avg. price: <HighlightedText>₹{finalInsights.bestWeather.averagePrice.toFixed(2)}</HighlightedText>)</span>
         </li>
+        {finalInsights.bestWeather.count < 10 && <li><span className="text-start">✅ As the occurance of above weather is very low, second best weather to buy is <HighlightedText>{finalInsights.alternativeBestWeather.condition}</HighlightedText> (Avg. price: <HighlightedText>₹{finalInsights.alternativeBestWeather.averagePrice.toFixed(2)}</HighlightedText>)</span></li>}
       </ul>
       
       <h3 className="text-xl sm:text-2xl font-bold mb-4 text-red-600 text-start border-b-2">😠 Worst Time to Buy </h3>
       <ul className="space-y-2 sm:space-y-3 text-start">
         <li >
-          <span className="text-start">❌ Day: <HighlightedText color="#c62828">{finalInsights.worstDay.day}</HighlightedText> (highest average price of <HighlightedText color="#c62828">₹{finalInsights.worstDay.price.toFixed(2)}</HighlightedText>)</span>
+          <span className="text-start">❌ <span className='font-bold'>Day</span>: <HighlightedText color="#c62828">{finalInsights.worstDay.day}</HighlightedText> (highest average price of <HighlightedText color="#c62828">₹{finalInsights.worstDay.price.toFixed(2)}</HighlightedText>)</span>
         </li>
         <li >
-          <span className="text-start">❌ Time: Avoid buying between <HighlightedText color="#c62828">{finalInsights.worstTimeSlot[0]}</HighlightedText>, as prices tend to increase during this time.</span>
+          <span className="text-start">❌ <span className='font-bold'>Time</span>: Avoid buying in the <HighlightedText color="#c62828">{finalInsights.worstTimeSlot[0].split('-')[0] < 12 ? 'morning' : 'evening'}</HighlightedText> between <HighlightedText color="#c62828">{hourFormat(finalInsights.worstTimeSlot[0])}</HighlightedText>, as prices tend to increase during this time.</span>
         </li>
         <li >
-          <span className="text-start">❌ Weather: Avoid buying during <HighlightedText color="#c62828">{finalInsights.worstWeather.condition}</HighlightedText> conditions (Avg. price: <HighlightedText color="#c62828">₹{finalInsights.worstWeather.averagePrice.toFixed(2)}</HighlightedText>).</span>
+          <span className="text-start">❌ <span className='font-bold'>Weather</span>: Avoid buying during <HighlightedText color="#c62828">{finalInsights.worstWeather.condition}</HighlightedText> conditions (Avg. price: <HighlightedText color="#c62828">₹{finalInsights.worstWeather.averagePrice.toFixed(2)}</HighlightedText>).</span>
         </li>
       </ul>
     </div>
@@ -132,7 +181,7 @@ const PriceInsightsComponent = ({ selectedItem }) => {
   );
 
   const renderWeatherAnalysis = () => (
-    <div className="mb-6 sm:mb-8 p-3 sm:p-4 bg-gray-100 rounded-lg shadow-sm text-sm sm:text-base">
+    <div className="mb-6 sm:mb-8 p-3 sm:p-4 bg-gray-100 rounded-lg text-sm sm:text-base shadow-lg">
       <h3 className="text-base sm:text-lg font-semibold mb-2 sm:mb-3">Weather Impact Analysis</h3>
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4" >
         <div className="flex-1 h-64 sm:h-80 px-4">
@@ -170,16 +219,11 @@ const PriceInsightsComponent = ({ selectedItem }) => {
     </div>
   );
 
-  // const volatilityChartData = volatilityData.map(([timeRange, stats]) => ({
-  //   label: timeRange,
-  //   avgAbsChange: stats.avgAbsChange
-  // }));
+
 
   const weatherChartData = formatDataForChart(weatherData, 'averagePrice');
-  // const dayofweekChartData = formatDataForChart(dayofweekData, 'averagePrice');
-
   return (
-    <div className="font-inter mt-16 w-auto sm:w-3/4 mx-2 sm:mx-40">
+    <div className="font-inter mt-16 w-auto sm:w-3/4 mx-2 sm:mx-20 md:mx-30 lg:mx-40 ">
       
       {Object.keys(finalInsights).length > 0 && renderFinalInsights()}
       

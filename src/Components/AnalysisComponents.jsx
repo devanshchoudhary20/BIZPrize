@@ -10,12 +10,12 @@ export const TimeFrameSelector = ({ timeFrame, setTimeFrame }) => {
     ];
 
     return (
-        <div className="flex gap-2 p-4 w-auto sm:w-3/4 mx-4 sm:mx-40 mb-4 mx-4">
+        <div className="text-left">
             {buttons.map(({ label, value }) => (
                 <button
                     key={value}
                     onClick={() => setTimeFrame(value)}
-                    className={`px-3 py-1 rounded ${
+                    className={`px-3 py-1 rounded m-2 ${
                         timeFrame === value
                             ? 'bg-blue-500 text-white'
                             : 'bg-gray-200 text-black'
@@ -50,7 +50,7 @@ export const PriceAnalysisCard = ({ item, itemData }) => {
     const maxVariance = ((maxPrice / minPrice - 1) * 100).toFixed(2);
 
     return (
-        <div className="bg-white shadow-lg rounded-lg p-4 w-auto sm:w-3/4 mx-2 sm:mx-40 mb-4 ">
+        <div className="bg-white shadow-lg rounded-lg p-4 w-auto sm:w-3/4 mx-2 sm:mx-20 md:mx-30 lg:mx-40 mb-4 ">
             <div className="flex items-center justify-between sm:flex-row flex-col items-center space-y-4 sm:space-y-0 ">
                 <div className=' flex flex-row items-center mr-4'>
                     <img src={item.imageUrl} alt={item.title} className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-full mr-4" />

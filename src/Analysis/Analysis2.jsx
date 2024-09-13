@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import SearchDropdown from '../Components/Search';
 import { fetchItemData, processItemData, calculateClusterData } from '../utils/dataProcessing';
 import { TimeFrameSelector, PriceAnalysisCard } from '../Components/AnalysisComponents';
-import ItemSelector from '../Components/ItemTabs';
+import ItemSearch from '../Components/ItemSearch';
 import PriceInsightsComponent from '../Components/PriceInsight';
 
 const Analysis2 = () => {
@@ -45,13 +44,14 @@ const Analysis2 = () => {
     return (
         <div className="w-full ">
             <div className="mb-4 flex flex-col flex-wrap gap-2 bg-gradient-to-r from-my-red to-my-blue p-4  items-center">
-                <ItemSelector onFileSelect={setSelectedItem} />
-                <SearchDropdown onFileSelect={setSelectedItem} />
+                {/* <ItemSelector onFileSelect={setSelectedItem} />
+                <SearchDropdown onFileSelect={setSelectedItem} /> */}
+                <ItemSearch onFileSelect={setSelectedItem} />
             </div>
             <div>
             {itemData.length > 0 && <PriceAnalysisCard item={itemData[0]} itemData={itemData} />}
             </div>
-            <div className='w-full sm:w-3/4 mx-0 sm:mx-40'>
+            <div className='w-full sm:w-3/4 mx-0 sm:mx-20 md:mx-30 lg:mx-40'>
             <TimeFrameSelector timeFrame={timeFrame} setTimeFrame={setTimeFrame} />
             </div>
 
@@ -59,7 +59,7 @@ const Analysis2 = () => {
             {error && <p className="text-red-500">{error}</p>}
 
             {!loading && !error && chartData.length > 0 ? (
-                <div className="h-64 sm:h-96 mb-8 p-4 w-auto sm:w-3/4 mx-2 sm:mx-40  shadow-lg p-2">
+                <div className="h-64 sm:h-96 mb-8 p-4 w-auto sm:w-3/4 mx-2 sm:mx-20 md:mx-30 lg:mx-40 shadow-lg p-2">
                     <ResponsiveContainer width="100%" height="100%" onResize={(width, height)=>{console.log(width, height);}}>
                         <LineChart data={chartData}>
                             <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
