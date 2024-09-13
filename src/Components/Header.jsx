@@ -4,9 +4,6 @@ import { IoLogoGithub } from "react-icons/io";
 const Header = () => {
   const [hoverButton, setHoverButton] = useState('');
 
-  const buttons = [
-    { name: 'Hire Me', href: 'https://www.linkedin.com/in/devansh-choudhary-2381041b1/'},
-  ];
 
   return (
     <header className="bg-my-purple p-2 sm:p-4 shadow-lg mb-4">

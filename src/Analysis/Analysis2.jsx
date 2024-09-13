@@ -44,8 +44,6 @@ const Analysis2 = () => {
     return (
         <div className="w-full ">
             <div className="mb-4 flex flex-col flex-wrap gap-2 bg-gradient-to-r from-my-red to-my-blue p-4  items-center">
-                {/* <ItemSelector onFileSelect={setSelectedItem} />
-                <SearchDropdown onFileSelect={setSelectedItem} /> */}
                 <ItemSearch onFileSelect={setSelectedItem} />
             </div>
             <div>
