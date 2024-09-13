@@ -8,7 +8,7 @@ const PriceInsightsComponent = ({ selectedItem }) => {
 
   const hourFormat = (hour) => {
     if(hour === '0-2'){
-      return '12 am - 2 am '
+      return '12 am - 2 am'
     }
     else if(hour === '2-4'){
       return '2 am - 4 am'
