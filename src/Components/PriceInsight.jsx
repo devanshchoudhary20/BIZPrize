@@ -199,9 +199,9 @@ const PriceInsightsComponent = ({ selectedItem }) => {
           <table className="w-full text-xs sm:text-sm">
             <thead className="sticky top-0 bg-white">
               <tr>
-                <th className="p-1 sm:p-2 text-left">Weather</th>
-                <th className="p-1 sm:p-2 text-left">Avg Price</th>
-                <th className="p-1 sm:p-2 text-left">Count</th>
+                <th className="p-1 sm:p-2 text-center">Weather</th>
+                <th className="p-1 sm:p-2 text-center">Avg Price</th>
+                <th className="p-1 sm:p-2 text-center">Count</th>
               </tr>
             </thead>
             <tbody>
