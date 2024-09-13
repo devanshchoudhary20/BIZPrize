@@ -1,4 +1,4 @@
-import Analysis2 from './Analysis/2';
+import Analysis2 from './Analysis/Analysis2';
 import './App.css';
 import Header from './Components/Header';
 import OpeningBlock from './Components/OpeningBlock';

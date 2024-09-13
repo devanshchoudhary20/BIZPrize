@@ -2,7 +2,7 @@ import React from 'react'
 
 const OpeningBlock = () => {
   return (
-    <div className="bg-white px-4 sm:px-6 md:px-8 lg:px-20 shadow-lg relative">
+    <div className="bg-white px-4 sm:px-20 md:px-30 lg:px-40 shadow-lg relative">
       <div className="flex flex-col md:flex-row justify-between items-center md:py-16">  
         <div className="flex flex-col justify-center text-center md:text-start space-y-2 md:space-y-3 w-full md:w-1/2 mb-4 md:mb-0 z-10">
           <h3 className="text-purple-600 font-bold text-xs sm:text-sm md:text-base font-inter">From clicks to insights</h3>
