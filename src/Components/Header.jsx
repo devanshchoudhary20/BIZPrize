@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IoLogoGithub } from "react-icons/io";
-
+import { FaLinkedin } from "react-icons/fa";
 const Header = () => {
   const [hoverButton, setHoverButton] = useState('');
 
@@ -23,18 +23,12 @@ const Header = () => {
               <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-300 transition-all duration-300 ${hoverButton === 'Project Details' ? 'w-full' : ''}`}></span>
             </div>       
             <a
-              key='Hire Me'
-              href='https://www.linkedin.com/in/devansh-choudhary-2381041b1/'
-              className="relative group"
-              onMouseEnter={() => setHoverButton('Hire Me')}
-              onMouseLeave={() => setHoverButton('')}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="text-white text-sm sm:text-lg font-semibold transition-colors duration-300 group-hover:text-yellow-300">
-              Hire Me
-              </span>
-              <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-300 transition-all duration-300 ${hoverButton === 'Hire Me' ? 'w-full' : ''}`}></span>
+            href="https://www.linkedin.com/in/devansh-choudhary-2381041b1/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white hover:text-yellow-300 transition-colors duration-300"
+          >
+              <FaLinkedin size={20} className="sm:w-6 sm:h-6 transform transition-transform duration-300 hover:scale-110" />
             </a>
           <a
             href="https://github.com/devanshchoudhary20/BIZPrize"
